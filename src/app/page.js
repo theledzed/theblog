@@ -33,7 +33,6 @@ export default function Home() {
   useEffect(() => {
     const handleStatusChange = () => {
       setIsOnline(window?.navigator?.onLine);
-      console.log("isOnline");
       let notificationObj = {
         type: "success",
         message: "Connected",
@@ -61,8 +60,6 @@ export default function Home() {
       window.removeEventListener("offline", handleStatusChange);
     };
   }, [isOnline]);
-
-  console.log("isOnline", isOnline);
 
   const getPost = async (filterValue) => {
     setIsLoading(true);

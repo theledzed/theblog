@@ -1,12 +1,22 @@
 "use client";
 import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Space } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Space,
+  notification,
+} from "antd";
 import axios from "axios";
 import styles from "./page.module.scss";
 
 export default function NewPost({ getPost, isOnline }) {
   const [open, setOpen] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
   const showDrawer = () => {
@@ -17,20 +27,37 @@ export default function NewPost({ getPost, isOnline }) {
     setOpen(false);
   };
 
+  const openNotificationWithIcon = ({ type, message, description }) => {
+    api[type]({
+      message,
+      description,
+    });
+  };
+
   const onFinish = async (values) => {
+    let notificationObj = { type: "", message: "", description: "" };
     try {
       await axios.post("https://theblog-api.vercel.app/api/theblog/post", {
         ...values,
       });
       onClose();
       getPost();
+      notificationObj = {
+        type: "success",
+        message: "Your post was created correctly",
+      };
     } catch (error) {
-      console.log("err", error);
+      notificationObj = {
+        type: "Error",
+        message: "Yikes an error was ocurred",
+      };
+      openNotificationWithIcon(notificationObj);
     }
   };
 
   return (
     <div className={styles.newPost}>
+      {contextHolder}
       <Button
         onClick={showDrawer}
         className={styles.newPostButton}
