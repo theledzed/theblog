@@ -14,7 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterOption, setFilterOption] = useState("title");
-  const [isOnline, setIsOnline] = useState(navigator?.onLine ?? true);
+  const [isOnline, setIsOnline] = useState(window?.navigator?.onLine ?? true);
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
@@ -32,14 +32,14 @@ export default function Home() {
 
   useEffect(() => {
     const handleStatusChange = () => {
-      setIsOnline(navigator.onLine);
+      setIsOnline(window?.navigator?.onLine);
       console.log("isOnline");
       let notificationObj = {
         type: "success",
         message: "Connected",
         description: "You are online",
       };
-      if (navigator.onLine) {
+      if (window?.navigator?.onLine) {
         openNotificationWithIcon(notificationObj);
         getPost();
       } else {
@@ -60,7 +60,7 @@ export default function Home() {
       window.removeEventListener("online", handleStatusChange);
       window.removeEventListener("offline", handleStatusChange);
     };
-  }, []);
+  }, [isOnline]);
 
   console.log("isOnline", isOnline);
 
