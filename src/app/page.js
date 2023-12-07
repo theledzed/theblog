@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Input, Spin, Radio, Empty } from "antd";
+import { Input, Spin, Radio, Empty, notification } from "antd";
 import Post from "@/components/Post";
 import NewPost from "@/components/NewPost";
 import axios from "axios";
@@ -14,10 +14,55 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterOption, setFilterOption] = useState("title");
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
-    getPost();
+    if (isOnline) {
+      getPost();
+    }
   }, []);
+
+  const openNotificationWithIcon = ({ type, message, description }) => {
+    api[type]({
+      message,
+      description,
+    });
+  };
+
+  useEffect(() => {
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+      console.log("isOnline");
+      let notificationObj = {
+        type: "success",
+        message: "Connected",
+        description: "You are online",
+      };
+      if (navigator.onLine) {
+        openNotificationWithIcon(notificationObj);
+        getPost();
+      } else {
+        notificationObj = {
+          type: "error",
+          message: "Disconnected",
+          description: "You are offline",
+        };
+        openNotificationWithIcon(notificationObj);
+      }
+    };
+
+    window.addEventListener("online", handleStatusChange);
+
+    window.addEventListener("offline", handleStatusChange);
+
+    return () => {
+      window.removeEventListener("online", handleStatusChange);
+      window.removeEventListener("offline", handleStatusChange);
+    };
+  }, []);
+
+  console.log("isOnline", isOnline);
 
   const getPost = async (filterValue) => {
     setIsLoading(true);
@@ -49,28 +94,37 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      {contextHolder}
       <div className={styles.header}>
         <span className={styles.title}>TheBlog</span>
-        <div className={styles.filterContainer}>
-          <Search
-            value={filterValue}
-            className={styles.search}
-            placeholder="input search text"
-            allowClear
-            onChange={(event) => {
-              setFilterValue(event.target.value);
-              getPost(event.target.value);
-            }}
-            size="large"
-          />
+        {isOnline && (
+          <>
+            <div className={styles.filterContainer}>
+              <Search
+                value={filterValue}
+                className={styles.search}
+                placeholder="input search text"
+                allowClear
+                onChange={(event) => {
+                  setFilterValue(event.target.value);
+                  getPost(event.target.value);
+                }}
+                size="large"
+              />
 
-          <Radio.Group onChange={onChangeFilterInput} value={filterOption}>
-            <Radio value={"title"}>Post title</Radio>
-            <Radio value={"author"}>Author</Radio>
-            <Radio value={"content"}>Content</Radio>
-          </Radio.Group>
-        </div>
-        <NewPost getPost={getPost} />
+              <Radio.Group
+                disabled={!isOnline}
+                onChange={onChangeFilterInput}
+                value={filterOption}
+              >
+                <Radio value={"title"}>Post title</Radio>
+                <Radio value={"author"}>Author</Radio>
+                <Radio value={"content"}>Content</Radio>
+              </Radio.Group>
+            </div>
+            <NewPost isOnline={isOnline} getPost={getPost} />
+          </>
+        )}
       </div>
       <div className={styles.content}>
         <Spin spinning={isLoading}>

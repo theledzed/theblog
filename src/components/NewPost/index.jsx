@@ -5,7 +5,7 @@ import { Button, Col, Drawer, Form, Input, Row, Space } from "antd";
 import axios from "axios";
 import styles from "./page.module.scss";
 
-export default function NewPost({ getPost }) {
+export default function NewPost({ getPost, isOnline }) {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
