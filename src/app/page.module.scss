@@ -40,3 +40,34 @@
   width: 50%;
   margin-top: 5em;
 }
+
+@media only screen and (max-width: 850px) {
+  .main {
+    padding: 0;
+  }
+  .header {
+    flex-direction: column;
+    align-items: center;
+    .title {
+      margin-top: 0.5em;
+      margin-right: 0em;
+    }
+    .search {
+      width: 20em;
+      margin-bottom: 0.5em;
+    }
+    .filterContainer {
+      display: flex;
+      flex-direction: column;
+      max-width: fit-content;
+      align-items: center;
+      margin: 1em 0em;
+    }
+  }
+
+  .content {
+    margin-top: 2em;
+    padding: 0em 1em;
+    width: 100%;
+  }
+}
