@@ -13,7 +13,7 @@ export default function PostDetail({ isOpen, onClose, postData }) {
   return (
     <div className={styles.postDetail}>
       <Drawer
-        width={640}
+        width={400}
         placement="right"
         closable={false}
         onClose={onClose}
