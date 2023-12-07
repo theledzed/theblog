@@ -12,8 +12,9 @@ export default function Post({ postData }) {
       const fullNameSplice = postData?.author.split(" ");
       const firstName = fullNameSplice[0];
       const lastName = fullNameSplice[1];
-      const initials =
-        firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+      const initials = `${firstName?.charAt(0)?.toUpperCase()} ${
+        lastName ? lastName?.charAt(0)?.toUpperCase() : ""
+      }`;
       return initials;
     }
   };
