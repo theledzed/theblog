@@ -14,7 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filterOption, setFilterOption] = useState("title");
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(navigator?.onLine ?? true);
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
