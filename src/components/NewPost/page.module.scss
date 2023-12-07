@@ -1,0 +1,46 @@
+.newPost {
+  .newPostButton {
+    background-color: #000;
+    color: #fff;
+    height: 46px;
+  }
+  .newPostButton:hover {
+    background-color: #fff;
+    color: #000 !important;
+    height: 46px;
+  }
+}
+
+.newPostForm {
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+
+  .newPostFooter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 1em;
+    .createPostButton {
+      background-color: #000;
+      color: #fff;
+      height: 40px;
+      padding: 4px 30px;
+    }
+    .createPostButton:hover {
+      background-color: #fff !important;
+      color: #000 !important;
+      border: 1px solid #000;
+    }
+    .cancelButton {
+      color: #000 !important;
+      height: 40px;
+      margin-right: 2em;
+    }
+    .cancelButton:hover {
+      color: #000 !important;
+    }
+  }
+}
